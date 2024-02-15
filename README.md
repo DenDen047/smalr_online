@@ -66,8 +66,14 @@ $ docker build -t denden047/smalr_online .
 
 ```bash
 $ docker run -it --rm \
+    -v /data/naoya/smalr_online:/data \
     denden047/smalr_online \
     /bin/bash
+```
+
+Due to [a bug of OpenDR](https://github.com/mattloper/opendr/pull/36), you need to replace line 102 in `/usr/local/lib/python3.8/site-packages/opendr/camera.py` to
+```python
+np.repeat(np.arange(self.v.r.size*2//3), 3)
 ```
 
 ## Running the Demo

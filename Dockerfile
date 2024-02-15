@@ -8,6 +8,7 @@ RUN pip install chumpy
 RUN pip install opencv-python
 RUN pip install matplotlib
 RUN pip install scikit-learn
+
 RUN apt-get install -y build-essential libgl1-mesa-dev  libglu1-mesa-dev freeglut3-dev libosmesa6-dev
 RUN pip install opendr
 
@@ -29,5 +30,6 @@ RUN tar -xf eigen-3.4-rc1.tar.gz
 ADD . /smalr_online
 RUN cd /smalr_online/src/smalr/sbody/alignment/mesh_distance && make
 
+RUN pip install numpy==1.23.1
 
 WORKDIR /smalr_online

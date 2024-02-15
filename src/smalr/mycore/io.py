@@ -55,7 +55,7 @@ def load_keymapping(animal):
     v_ids = mapping.vids
     # Make single keyids into array instead of bare int..
     # -1 because the indices are in matlab.
-    v_ids = np.array([np.atleast_1d(v) - 1 for v in v_ids])
+    v_ids = np.array([np.atleast_1d(v) - 1 for v in v_ids], dtype=object)
 
     kp_names = mapping.names
     kp_names = [name.encode('ascii', 'ignore') for name in kp_names]

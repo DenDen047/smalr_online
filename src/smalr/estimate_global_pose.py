@@ -34,7 +34,7 @@ def estimate_translation(landmarks, key_vids, focal_length, model):
 
     pairs = [p for p in itertools.combinations(use_ids, 2)]
 
-    def mean_model_point(row_id): 
+    def mean_model_point(row_id):
         if len(key_vids[row_id]) > 1:
             return np.mean(model[key_vids[row_id]].r, axis=0)
         else:
@@ -81,7 +81,7 @@ def estimate_global_pose(landmarks, key_vids, model, cam, img, fix_t=False, viz=
     num_verts_per_kp = [len(key_vids[row_id]) for row_id in use_ids]
     j2d = np.vstack([np.tile(kp, (num_rep, 1)) for kp, num_rep in zip(keypoints, num_verts_per_kp)])
 
-    assert(cam.r.shape == j2d.shape)    
+    assert(cam.r.shape == j2d.shape)
 
     # SLOW but correct method!!
     # remember which ones belongs together,,
@@ -112,7 +112,7 @@ def estimate_global_pose(landmarks, key_vids, model, cam, img, fix_t=False, viz=
         obj['freg'] = 1e1 * (cam.f[0] - 3000) / 1000.
         # here without this cam.f goes negative.. (asking margin of 500)
         obj['fpos'] = ch.maximum(0, 500-cam.f[0])
-        # cam t also has to be positive! 
+        # cam t also has to be positive!
         obj['cam_t_pos'] = ch.maximum(0, 0.01-model.trans[2])
         del obj['cam_t']
         free_variables.append(cam.f)
@@ -143,13 +143,13 @@ def estimate_global_pose(landmarks, key_vids, model, cam, img, fix_t=False, viz=
         # Init translation
         model.trans[:] = init_t
         model.pose[:3] = angle
-        ch.minimize( obj, x0=free_variables, method='dogleg', callback=on_step, options={'maxiter': 100, 'e_3': .0001})
+        ch.minimize(obj, x0=free_variables, method='dogleg', callback=on_step, options={'maxiter': 100, 'e_3': .0001})
         scores[i] = np.sum(obj['cam'].r**2.)
     j = np.argmin(scores)
     model.trans[:] = init_t
     model.pose[:3] = init_angles[j]
     ch.minimize( obj, x0=free_variables, method='dogleg', callback=on_step, options={'maxiter': 100, 'e_3': .0001})
-    
+
     print('Took %g' % (time() - t0))
 
     #import pdb; pdb.set_trace()
