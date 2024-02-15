@@ -15,11 +15,12 @@ if platform.system().lower() in ['darwin', 'linux']:
     additional_options['extra_compile_args'] = extra_compile_args
 
 if platform.system().lower() in ['darwin']:
-    extra_compile_args+=['-stdlib=libc++'] 
-    extra_link_args=['-stdlib=libc++'] 
+    extra_compile_args+=['-stdlib=libc++']
+    extra_link_args=['-stdlib=libc++']
 
 #EIGEN_DIR = '/Users/silvia/frankengeist/thirdparties/install/eigen'
-EIGEN_DIR = '/Users/silvia/Tools/eigen-3.3.7/'
+# EIGEN_DIR = '/Users/silvia/Tools/eigen-3.3.7/'
+EIGEN_DIR = '/tmp/eigen-3.4-rc1/'
 
 def setup_extended(parallel=True, numpy_includes=True, usr_local_includes=True, **kwargs):
     """Like "setup" from distutils

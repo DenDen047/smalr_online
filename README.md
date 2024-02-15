@@ -31,7 +31,7 @@ $ pip3 install chumpy
 $ pip3 install opencv-python
 $ pip3 install matplotlib
 $ pip3 install opendr
-$ pip3 install sklearn
+$ pip3 install scikit-learn
 ```
 You need to do the following changes to opendr:
 - In `venv_smalr_online/lib/python3.8/site-packages/opendr/common.py` change line 467 adding cast to int as `(int(verts_by_face.shape[0]/f.shape[1])`.
@@ -57,6 +57,18 @@ Place the directory `smpl_webuser` from SMPL in the `src/smalr` directory. Note 
 dd = pickle.load(open(fname_or_dict, "rb"), encoding='latin1')
 ```
 Settings are listed in `smalr_settings.py`.
+
+### Docker
+
+```bash
+$ docker build -t denden047/smalr_online .
+```
+
+```bash
+$ docker run -it --rm \
+    denden047/smalr_online \
+    /bin/bash
+```
 
 ## Running the Demo
 Run
