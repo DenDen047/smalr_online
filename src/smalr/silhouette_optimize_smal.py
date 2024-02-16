@@ -225,7 +225,7 @@ def fit_silhouettes_multi_model(objs,
 
     free_variables = []
     free_variables.append(dv)
-    opt = {'maxiter': max_iter, 'max_fevals': 1000, 'e_3': 1e-2}
+    opt = {'maxiter': max_iter, 'e_3': 1e-2}
     if max_iter > 0:
         if len(input_free_variables) > 0:
             print('free_variables are pose')

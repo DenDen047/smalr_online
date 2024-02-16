@@ -71,14 +71,14 @@ $ docker run -it --rm \
     /bin/bash
 ```
 
-Due to [a bug of OpenDR](https://github.com/mattloper/opendr/pull/36), you need to replace:
+<!-- Due to [bugs of OpenDR](https://github.com/mattloper/opendr/pull/36), you need to replace:
 - line 102 in `/usr/local/lib/python3.8/site-packages/opendr/camera.py` to `np.repeat(np.arange(self.v.r.size*2//3), 3)`.
 - line 467 in `/usr/local/lib/python3.8/site-packages/opendr/common.py` to `vc_by_face = np.asarray(np.tile(np.eye(3)[:f.shape[1], :], (verts_by_face.shape[0]//f.shape[1], 1)), order='C')`.
-- line 177 in `/usr/local/lib/python3.8/site-packages/opendr/common.py` to `result = sp.csc_matrix((data, ij), shape=(int(image_width*image_height*n_channels), int(num_verts*2)))`.
+- line 177 in `/usr/local/lib/python3.8/site-packages/opendr/common.py` to `result = sp.csc_matrix((data, ij), shape=(int(image_width*image_height*n_channels), int(num_verts*2)))`. -->
 
 ## Running the Demo
-Run
-`python run_on_animals.py`.
+
+Run `python run_on_animals.py`.
 
 You will obtain images like the ones below:
 

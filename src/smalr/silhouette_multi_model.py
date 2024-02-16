@@ -199,7 +199,6 @@ def fit_silhouettes_multi_model(objs,
 
     opt = {
         'maxiter': max_iter,
-        'max_fevals': 1000,
         'e_3': 1e-2
     }
 
