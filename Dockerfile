@@ -30,6 +30,9 @@ RUN tar -xf eigen-3.4-rc1.tar.gz
 ADD . /smalr_online
 RUN cd /smalr_online/src/smalr/sbody/alignment/mesh_distance && make
 
+# Fixing the some bugs of OpenDR
 RUN pip install numpy==1.23.1
+RUN sed -i 's/np.repeat(np.arange(self.v.r.size*2\/3), 3)/np.repeat(np.arange(self.v.r.size*2\/\/3), 3)/g' /usr/local/lib/python3.8/site-packages/opendr/camera.py
+
 
 WORKDIR /smalr_online

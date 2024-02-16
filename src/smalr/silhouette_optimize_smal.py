@@ -53,15 +53,15 @@ def fit_silhouettes_pyramid_opt(objs,
         w_s2m = weights * s2m_weights
         w_m2s = weights * m2s_weights
         R, s_objs = fit_silhouettes_multi_model(objs, shape_model, dv, silh_here, cam_here,
-                                        w_s2m, w_m2s, max_iter, free_variables, mv, 
+                                        w_s2m, w_m2s, max_iter, free_variables, mv,
                                         cams, imgs, j2d,
-                                        pyr_scale=sc, 
+                                        pyr_scale=sc,
                                         vc=vc, symIdx=symIdx, mv2=mv2, last_round=(si==len(scales)-1), objs_pose=objs_pose)
 
         # Silvia. For scales < 1 we optimize f on the kp_camera (cams) and then we update cam_copy
         for i in range(len(cams)):
-            #cam_copy[i].f[:] = cams[i].f.r 
-            cam_copy[i].f[:] = cam_here[i].f.r/sc 
+            #cam_copy[i].f[:] = cams[i].f.r
+            cam_copy[i].f[:] = cam_here[i].f.r/sc
         res_silh.append(R)
 
     # Compute energy
@@ -145,7 +145,7 @@ def fit_silhouettes_multi_model(objs,
     global c
     c = 0
 
-    
+
     if True: #mv is not None:
         import matplotlib.pyplot as plt
         plt.ion()
@@ -182,7 +182,7 @@ def fit_silhouettes_multi_model(objs,
                 plt.show(block=False)
                 plt.pause(1e-5)
                 #mv[i].set_static_meshes([Mesh(shape_model[i].r, shape_model[i].f)])
-                
+
                 if False: #vc is not None:
                     vc1 = vc[i].r.copy()
                     vc1[:,0] = vc[i].r.copy()[:,2]
@@ -225,7 +225,7 @@ def fit_silhouettes_multi_model(objs,
 
     free_variables = []
     free_variables.append(dv)
-    opt = {'maxiter': max_iter, 'e_3': 1e-2}
+    opt = {'maxiter': max_iter, 'max_fevals': 1000, 'e_3': 1e-2}
     if max_iter > 0:
         if len(input_free_variables) > 0:
             print('free_variables are pose')
@@ -240,7 +240,7 @@ def fit_silhouettes_multi_model(objs,
             plt.figure()
             plt.imshow(img[:, :, ::-1])
             plt.imshow(img_res)
-            plt.axis('off')    
+            plt.axis('off')
 
     return rends[0].r, new_objs
 

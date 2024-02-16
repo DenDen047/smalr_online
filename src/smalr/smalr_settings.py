@@ -1,8 +1,8 @@
-code = 'online' 
-clean_from_green = False 
+code = 'online'
+clean_from_green = False
 
 if code == 'online':
-    smalr_dir='smalr_output'
+    smalr_dir = '/data/smalr_output'
     model_name = 'smal_00781_4_all.pkl'
     shape_data_name = 'smal_data_00781_4_all.pkl'
     animal_output_dir = 'animal_output'
@@ -16,7 +16,7 @@ if code == 'online':
     'k_tail_pose_term': 1e3,
     'k_rest_pose_term': 4*1e3,
     'k_m2s':10 * 1e3,
-    'k_s2m':2 * 1e3, 
+    'k_s2m':2 * 1e3,
     'k_kp_term': 1.5*1e3,
     'k_limit_term' : 7 * 1e5,
     'k_trans_term' : 1e3,

@@ -58,7 +58,7 @@ def fit_silhouettes_pyramid_multi_model(objs,
     for sc in scales:
 
         if 'shape_prior' in objs.keys():
-            objs['shape_prior'] = 0.4 * objs['shape_prior'] 
+            objs['shape_prior'] = 0.4 * objs['shape_prior']
 
         silh_here = [cv2.resize(silh, (int(silh.shape[1] * sc),int(silh.shape[0] * sc))) for silh in silhs]
         cam_here = [scalecam(cam, sc) for cam in cam_copy]
@@ -74,7 +74,7 @@ def fit_silhouettes_pyramid_multi_model(objs,
 
         # For scales < 1 we optimize f on the kp_camera (cams) and then we update cam_copy
         for i in range(len(cams)):
-            cam_copy[i].f[:] = cam_here[i].f.r/sc 
+            cam_copy[i].f[:] = cam_here[i].f.r/sc
         res_silh.append(R)
 
     # Compute energy
@@ -177,7 +177,7 @@ def fit_silhouettes_multi_model(objs,
     free_variables = []
     if fix_trans is False:
         for i in range(nCameras):
-            free_variables.append(sv[i].trans) 
+            free_variables.append(sv[i].trans)
     else:
         free_variables = []
     if fix_shape is False:
@@ -194,12 +194,16 @@ def fit_silhouettes_multi_model(objs,
 
     # If objective contains 'feq', then add cam.f to free variables.
     if 'feq' in new_objs:
-        for i in range(len(rends)):   
+        for i in range(len(rends)):
             free_variables.append(cameras[i].f)
 
-    opt = {'maxiter': max_iter, 'e_3': 1e-2}
+    opt = {
+        'maxiter': max_iter,
+        'max_fevals': 1000,
+        'e_3': 1e-2
+    }
 
-    if max_iter > 0:
+    if opt['maxiter'] > 0:
         ch.minimize(new_objs, x0=free_variables, method='dogleg', callback=on_step, options=opt)
 
     def render_and_show(sv):
@@ -209,7 +213,7 @@ def fit_silhouettes_multi_model(objs,
             plt.figure()
             plt.imshow(img[:, :, ::-1])
             plt.imshow(img_res)
-            plt.axis('off')    
+            plt.axis('off')
 
     return rends[0].r, new_objs
 
@@ -238,7 +242,7 @@ def setup_silhouette_obj(silhs, rends, f):
     def obj_s2m(w, i):
         from sbody.mesh_distance import ScanToMesh
         return w * ch.sqrt(GMOf(ScanToMesh(scan_flat[i], sv_flat[i], f), sigma[i]))
-       
+
     # For vis
     for i in range(len(rends)):
         scan_flat[i].vc = np.tile(np.array([0, 0, 1]), (len(scan_flat[i].v), 1))

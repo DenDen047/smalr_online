@@ -22,32 +22,33 @@ def set_params(DO_FREE_SHAPE=False, SOLVE_FLATER=True, FIX_SHAPE=False, nCameras
     params['k_robust_sig'] = 150
 
     # Weights.
-    params['k_kp_term'] = settings['k_kp_term']  
+    params['k_kp_term'] = settings['k_kp_term']
     params['k_shape_term'] = settings['k_shape_term']
     params['k_pose_term'] = settings['k_pose_term']
     params['k_tail_pose_term'] = settings['k_tail_pose_term']
     params['k_rest_pose_term'] = settings['k_rest_pose_term']
-    params['k_limit_term'] = settings['k_limit_term']   
+    params['k_limit_term'] = settings['k_limit_term']
     if nCameras == 1:
         params['betas_var'] = 0
     else:
-        params['betas_var'] = settings['k_betas_var']  
+        params['betas_var'] = settings['k_betas_var']
 
     if DO_FREE_SHAPE:
         params['k_pose_term'] = settings['k_pose_term_free_shape']
-        params['k_shape_term'] =  settings['k_shape_term_free_shape'] 
+        params['k_shape_term'] =  settings['k_shape_term_free_shape']
 
     # Stay close to init term:
     params['k_trans_term'] = settings['k_trans_term']
     params['k_rot_term'] = settings['k_rot_term']
 
     # If we use silhouettes..
-    params['k_m2s'] = settings['k_m2s']  
-    params['k_s2m'] = settings['k_s2m']   
+    params['k_m2s'] = settings['k_m2s']
+    params['k_s2m'] = settings['k_s2m']
 
-    params['opt_weights_only_kp'] = zip(params['k_pose_term'] * np.array([1, 8e-1, 5e-1, 4.9e-1]),
-                  params['k_tail_pose_term'] * np.array([1, 8e-1, 5e-1, 4.9e-1]),
-                  params['k_shape_term'] * np.array([1, .9, .7, .6]),)
+    params['opt_weights_only_kp'] = zip(
+        params['k_pose_term'] * np.array([1, 8e-1, 5e-1, 4.9e-1]),
+        params['k_tail_pose_term'] * np.array([1, 8e-1, 5e-1, 4.9e-1]),
+        params['k_shape_term'] * np.array([1, .9, .7, .6]),)
 
     return params
 
@@ -119,7 +120,7 @@ def multi_clip_model_fit_w_keypoints(body, model,
                      sv=None, pose_prior=None,
                      limit_prior=None,
                      shape_prior=None,
-                     landmarks_names=None, init_flength=1000., 
+                     landmarks_names=None, init_flength=1000.,
                      symIdx=None, FREE_SHAPE_TYPE='allpca', FIX_TRANS=False, FIX_POSE=False):
 
     t0 = time()
@@ -180,14 +181,14 @@ def multi_clip_model_fit_w_keypoints(body, model,
         kp_weights[i] = np.ones((landmarks[i].shape[0], 1))
         kp_weights[i] = np.ones((landmarks[i].shape[0],1))
 
-        
+
         kp_weights[i][landmarks_names[i].index('leftEye'),:] *= 2.
         kp_weights[i][landmarks_names[i].index('rightEye'),:] *= 2.
         kp_weights[i][landmarks_names[i].index('leftEar'),:] *= 2.
         kp_weights[i][landmarks_names[i].index('rightEar'),:] *= 2.
         if 'noseTip' in landmarks_names[i]:
             kp_weights[i][landmarks_names[i].index('noseTip'),:] *= 2.
-        
+
 
     def kp_proj_error(i, w, sigma):
         return w * kp_weights[i][use_ids[i]] * GMOf(ch.vstack([cam[i][choice] if np.sum(choice) == 1 else cam[i][choice].mean(axis=0) for choice in assignments[i]]) - j2d[i], sigma) / np.sqrt(num_points[i])
@@ -270,6 +271,7 @@ def multi_clip_model_fit_w_keypoints(body, model,
                 mv[i].set_dynamic_meshes([Mesh(sv[i].r, model.f)])
     else:
         mv = None
+        mv2 = None
         on_step = None
 
     if viz:
@@ -375,11 +377,11 @@ def multi_clip_model_fit_w_keypoints(body, model,
         img_rot1 = render_orth(sv[i], im.shape[1], im.shape[0], cam[i], deg=-45, margin=margin, color_key=use_color)
         # Put together final image to save.
         img_pad = np.pad(im/255., ((margin[0], margin[0]),(0, 0),(0,0)), 'constant', constant_values=1.)
-        img_pad_alph = np.ones((img_pad.shape[0],img_pad.shape[1],1)) 
+        img_pad_alph = np.ones((img_pad.shape[0],img_pad.shape[1],1))
         img_pad_alph[:margin[0], :, :] = 0
         img_pad_alph[img_pad.shape[0]-margin[0]:img_pad.shape[0], :, :] = 0
 
-        img_final_alph = np.zeros((img_final.shape[0],img_final.shape[1])) 
+        img_final_alph = np.zeros((img_final.shape[0],img_final.shape[1]))
         img_final_alph[margin[0]:-margin[0], margin[1]:-margin[1]] = 1
         img_final_alph = np.logical_or(img_final_alph, (~np.all(img_final == 1., axis=2)).astype(img_final.dtype))
 

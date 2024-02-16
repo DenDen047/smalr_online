@@ -1,4 +1,4 @@
-from os.path import join 
+from os.path import join
 from compute_clips import compute_clips
 from psbody.mesh import Mesh
 from smalr_settings import model_name, shape_data_name, smalr_dir, animal_output_dir
@@ -6,7 +6,7 @@ from smalr_settings import model_name, shape_data_name, smalr_dir, animal_output
 import numpy as np
 np.random.seed(0)
 
-save_base_dir = '../../'+smalr_dir+'/'+animal_output_dir+'/'
+save_base_dir = join(smalr_dir, animal_output_dir + '/')
 base_dir = '../../data/'
 
 # Read the symmetric indexes from the gloss model. They are needed to set the texture.
@@ -14,7 +14,8 @@ import pickle as pkl
 symIdx = pkl.load(open('symIdx.pkl','rb'), encoding='latin1')
 
 max_image_size = 480
-animals_set = ['pig_B'] #['cheetah_D'] #'zebra_A'] 
+# animals_set = ['pig_B'] #['cheetah_D'] #'zebra_A']
+animals_set = ['cheetah_D']
 
 init_flength = 1000.
 align_w_optimized_template = False
@@ -29,7 +30,7 @@ for animal in animals_set:
         family = 'other'
         use_face_landmarks = True
         base_dir = '../../data/'
-        clip_set = ['01', '01', '01', '01'] 
+        clip_set = ['01', '01', '01', '01']
         fStart = ['7020', '7181', '7005', '7584']
         fStop = ['7020', '7181', '7005', '7584']
         clip_set = ['01', '01', '01', '01', '01', '01']
@@ -95,9 +96,10 @@ for animal in animals_set:
 
     compute_clips(family, model_name, shape_data_name, base_dirs, save_base_dir,
              animal_set, clip_set, frameStarts, frameStops, symIdx,
-             viz=True, init_flength=init_flength, init_from_mean_pose=True, border=border,
+             viz=False,
+             init_flength=init_flength, init_from_mean_pose=True, border=border,
              opt_model_dir=opt_model_dir,
              custom_template=custom_template, NO_TAIL=no_tail, code=code,
-             landmarks=landmarks, 
-             max_image_size=max_image_size) 
+             landmarks=landmarks,
+             max_image_size=max_image_size)
 
