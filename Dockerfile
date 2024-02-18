@@ -1,14 +1,20 @@
-FROM python:3.8
+FROM dorowu/ubuntu-desktop-lxde-vnc
+# python 3.8.5
 
 
 RUN apt-get update && apt-get install -y git
+
+# pip
+WORKDIR /tmp
+RUN apt install -y python3-pip
 RUN pip install -U pip
 
+# prerequirement packages
 RUN pip install chumpy
 RUN pip install opencv-python
 RUN pip install matplotlib
 RUN pip install scikit-learn
-
+# opendr
 RUN apt-get install -y build-essential libgl1-mesa-dev  libglu1-mesa-dev freeglut3-dev libosmesa6-dev
 RUN pip install opendr
 

@@ -199,6 +199,7 @@ def fit_silhouettes_multi_model(objs,
 
     opt = {
         'maxiter': max_iter,
+        'max_fevals': 1e4,
         'e_3': 1e-2
     }
 
@@ -230,7 +231,7 @@ def setup_silhouette_obj(silhs, rends, f):
         return w * (GMOf(rends[i][:, :, 0] * dist_tsf[i], sigma[i]) / np.sqrt(n_model[i]))
 
     # silhouette error term (scan-to-model) ==> Coverage (expansion)
-    coords = [np.fliplr(np.array(np.where(silh > 0)).T) + 0.5  for silh in silhs]# is this offset needed?
+    coords = [np.fliplr(np.array(np.where(silh > 0)).T) + 0.5 for silh in silhs]    # is this offset needed?
     scan_flat_v = [np.hstack((coord, ch.zeros(len(coord)).reshape((-1, 1)))) for coord in coords]
     scan_flat = [Mesh(v=sflat_v, f=[]) for sflat_v in scan_flat_v]
     # 2d + all 0.
