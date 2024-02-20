@@ -6,7 +6,7 @@
 
 function annotate_images()
 
-base_dir = './images'
+base_dir = '/Users/ikuta/Documents/Projects/PhD/smalr_online/data/lion';
 
 % family = 'dog';
 %family = 'hippo';
@@ -16,14 +16,14 @@ family = 'big_cats';
 %family = 'horse';
 % base_dir = fullfile(base_dir, family);
 
-ext = '(jpg|JPG|png)';
+ext = '(jpeg|jpg|JPG|png)';
 
 content = dir(base_dir);
 names = {content.name};
 ok = regexpi(names, ['.*\.',ext,'$'],'start');
 names = names(~cellfun(@isempty,ok));
 % Remove silhouettes.
-ok = regexpi(names, ['_s.png$'],'start');
+ok = regexpi(names, '_s.png$','start');
 
 do_these = names(cellfun(@isempty,ok));
 

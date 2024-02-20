@@ -6,7 +6,7 @@ function annotate2DwithQuery_multipleverts(img_path, model_path, map, out_path)
 % and names : num_parts x 1.
 % Doesn not save 'cam_info' or 'v_ids' 
 
-if ~exist('read_ply', 'file');
+if ~exist('read_ply', 'file')
     addpath('libs');
 end
 num_parts = length(map.names);
@@ -42,7 +42,7 @@ names = map.names;
 
 mesh = get_mesh(model_path, map);
 I = imread(img_path);
-if ndims(I) == 2
+if ismatrix(I)
     I = imadjust(I);
     I = repmat(I, [1, 1, 3]);
 end
@@ -111,10 +111,10 @@ while ~done
     set(0, 'currentfigure', h_fig);
     
     
-    [col_in, row_in, button_in] = ginput(1);            
+    [col_in, row_in, button_in] = ginput(1);
     col_in = round(col_in);
     row_in = round(row_in);
-    if isempty(vid2ask) && (isempty(strfind('rckzq', button_in)))
+    if isempty(vid2ask) && (~contains('rckzq', button_in))
         fprintf('input either Remove, Continue, z, k, or q\n');
         continue
     end
@@ -330,7 +330,7 @@ z = point1.Position(3);
                     z]).^2,2));
 selected_pt = mesh.annotation.threeD(part_id,:);
 v_id = mesh.annotation.v_ids(part_id);
-% fprintf('click @ (%f, %f, %f)\n', x,y,z);        
+fprintf('click @ (%f, %f, %f)\n', x,y,z);        
 sfigure(h_fig);
 plot3(selected_pt(1), selected_pt(2), selected_pt(3), 'o', 'MarkerSize', 15, 'MarkerEdgeColor', ...
       'w', 'MarkerFaceColor', 'g');
@@ -343,7 +343,7 @@ new_point = selected_pt;
 
 function cam_info = get_3D_camera(mesh, annotation)
 
-if isfield(annotation,'cam_info') && ~isempty(annotation.cam_info);
+if isfield(annotation,'cam_info') && ~isempty(annotation.cam_info)
     h_fig = sfigure(10); clf;
     patch('Faces',mesh.tri,'Vertices',mesh.X,'EdgeColor',[0.7 0.7 0.7], ...
           'FaceColor','w','Marker', '.', 'MarkerSize', ...
@@ -367,7 +367,7 @@ c = cam_info.campos./norm(cam_info.campos);
 b = cam_info.camup./norm(cam_info.camup);
 cam_info.rotation = [cross(b, c); b; c];
 % This is the rotation to be set in SMPL pose[:3].
-cam_info.R = [cross(-b, -c); -b; -c]
+cam_info.R = [cross(-b, -c); -b; -c];
 
 camtarget(mesh.cam_tgt);
 campos(mesh.cam_pos);
